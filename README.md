@@ -28,3 +28,5 @@ TMP_SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/singlalien-
 3) nano /opt/tblocker/blocked_ips.json - Заблокированные юзеры в Tblocker
 4) sudo nano /opt/tblocker/send_user_notifications.py - Параметры скрипта для автоотправки уведомлений юзерам
 5) sudo crontab -e - Настройки крона
+6) sudo tail -n 30 /var/log/tblocker_notify.log - Логи скрипта для отправки уведомлений юзерам
+
