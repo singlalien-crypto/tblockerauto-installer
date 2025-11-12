@@ -1,4 +1,22 @@
 # tblockerauto-installer
 
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/yourusername/tblockerauto-installer/main/install.sh)"
+Команда для запуска скрипта - TMP_SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/singlalien-crypto/tblockerauto-installer/main/tblockerauto.sh | tr -d '\r' > "$TMP_SCRIPT" && sudo bash "$TMP_SCRIPT" && rm "$TMP_SCRIPT"
 
+
+Скрипт делает всю рутинную работу по установке и настройке Tblocker за вас + добавляет отдельный скрипт для отправки уведомлений клиенту о блокировке
+
+"Время блокировки:    Указываем в минутах 
+"URL админ-вебхука:   URL вебхух админского бота, который будет присылать уведомления лично вам о блокировках пользователей на конкретном сервере
+"ID админ-чата:       Ваш телеграмм айди для отправки уведомлений 
+"Имя сервера:         Называйте как хотите
+"Токен user-бота:     Токен бота через который будут отправляться уведомления клиентам
+"Расписание Cron:     Время через которое скрипт для отправки уведомлений клиентам будет запускаться (В минутах)
+
+
+Команды для правки конфигов и ручного администрирования:
+
+1) sudo nft list ruleset - Забаненные юзеры в группе Torrent (Если используйте Nft фаервол)
+2) nano /opt/tblocker/config.yaml - Конфиг тблокера
+3) nano /opt/tblocker/blocked_ips.json - Заблокированные юзеры в Tblocker
+4) sudo nano /opt/tblocker/send_user_notifications.py - Параметры скрипта для автоотправки уведомлений юзерам
+5) sudo crontab -e - Настройки крона
