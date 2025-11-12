@@ -1,7 +1,9 @@
 # tblockerauto-installer
 
-Команда для запуска скрипта - TMP_SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/singlalien-crypto/tblockerauto-installer/main/tblockerauto.sh | tr -d '\r' > "$TMP_SCRIPT" && sudo bash "$TMP_SCRIPT" && rm "$TMP_SCRIPT"
-
+Команда для запуска скрипта  
+```bash
+TMP_SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/singlalien-crypto/tblockerauto-installer/main/tblockerauto.sh | tr -d '\r' > "$TMP_SCRIPT" && sudo bash "$TMP_SCRIPT" && rm "$TMP_SCRIPT"
+```
 
 Скрипт делает всю рутинную работу по установке и настройке Tblocker за вас + добавляет отдельный скрипт для отправки уведомлений клиенту о блокировке
 
