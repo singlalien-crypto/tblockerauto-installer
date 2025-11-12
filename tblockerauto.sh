@@ -11,22 +11,23 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-echo -e "\n=== 🧠 Установка TBlocker ===\n"
+echo -e "\n=== 🧠 Установка TBlocker для Ubuntu ===\n"
 
-# === Установка зависимостей без интерактива
+# --- Установка зависимостей ---
 log "Обновление пакетов и установка зависимостей..."
 DEBIAN_FRONTEND=noninteractive apt update -y
-DEBIAN_FRONTEND=noninteractive apt install -y python3 python3-pip python3-requests git nano cron curl
+DEBIAN_FRONTEND=noninteractive apt install -y python3 python3-pip python3-requests git nano cron curl dos2unix
 
-# === Установка TBlocker (скачиваем и выполняем отдельно) ===
+# --- Установка TBlocker ---
 log "Установка TBlocker..."
 TMP_INSTALL=$(mktemp)
 curl -fsSL git.new/install -o "$TMP_INSTALL"
+dos2unix "$TMP_INSTALL"
 chmod +x "$TMP_INSTALL"
 bash "$TMP_INSTALL"
 rm -f "$TMP_INSTALL"
 
-# === Интерактивный ввод с дефолтами ===
+# --- Интерактивные параметры с дефолтами ---
 if [[ -t 0 ]]; then
   read -p "⏱️  Длительность блокировки (минуты, по умолчанию 720): " BLOCK_DURATION
   BLOCK_DURATION=${BLOCK_DURATION:-720}
@@ -54,7 +55,7 @@ else
   CRON_INTERVAL=20
 fi
 
-# === Создание config.yaml ===
+# --- Создание config.yaml ---
 log "Создание /opt/tblocker/config.yaml ..."
 mkdir -p /opt/tblocker
 if [[ "$ENABLE_WEBHOOK" =~ ^[Yy]$ ]]; then
@@ -78,7 +79,7 @@ BlockMode: "nft"
 $WEBHOOK_CONFIG
 EOF
 
-# === Скрипт уведомлений ===
+# --- Скрипт уведомлений ---
 log "Создание /opt/tblocker/send_user_notifications.py ..."
 cat <<'PY' >/opt/tblocker/send_user_notifications.py
 #!/usr/bin/env python3
@@ -125,7 +126,7 @@ PY
 
 chmod +x /opt/tblocker/send_user_notifications.py
 
-# === Настройка cron ===
+# --- Настройка cron ---
 log "Добавление задачи в cron..."
 (crontab -l 2>/dev/null; echo "*/$CRON_INTERVAL * * * * /usr/bin/python3 /opt/tblocker/send_user_notifications.py >> /var/log/tblocker_notify.log 2>&1") | crontab -
 
